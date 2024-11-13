@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import Navbar from './components/Navbar';
-import ProductGrid from './components/ProductGrid';
-import Hero from './components/Hero';
-import Footer from './components/Footer';
+import Navbar from './components/Navbar/Navbar.jsx';
+import ProductGrid from './components/ProductGrid/ProductGrid.jsx';
+import Hero from './components/Hero/Hero.jsx';
+import Footer from './components/Footer/Footer.jsx';
 
 function App() {
   const [cart, setCart] = useState([]);
@@ -36,7 +36,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+    <div className="app-container">
       <Navbar cartCount={cart.length} setCategory={setCategory} />
       <Hero />
       <ProductGrid products={filteredProducts} addToCart={addToCart} category={category} />
