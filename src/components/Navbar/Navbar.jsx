@@ -1,39 +1,50 @@
 import React from 'react';
-import { Menu, ShoppingCart, Home, Smartphone, Laptop } from 'lucide-react';
+import { ShoppingCart, Smartphone, Monitor, Menu } from 'lucide-react';
 import './Navbar.css';
 
 function Navbar({ cartCount, setCategory }) {
   return (
     <nav className="navbar">
-      <div className="navbar-container">
+      <div className="container">
         <div className="navbar-content">
-          <div className="navbar-left">
-            <a href="/" className="navbar-brand">TechStore</a>
-            
+          <div className="left-section">
+            <h1 className="logo">TechAccessories</h1>
             <div className="nav-links">
-              <button className="nav-button">
-                <Home className="nav-button-icon" />
-                Home
+              <button
+                onClick={() => setCategory('all')}
+                className="nav-button"
+              >
+                All Products
               </button>
-              <button className="nav-button">
-                <Smartphone className="nav-button-icon" />
+              <button
+                onClick={() => setCategory('mobile')}
+                className="nav-button"
+              >
+                <Smartphone className="icon" />
                 Mobile
               </button>
-              <button className="nav-button">
-                <Laptop className="nav-button-icon" />
-                Computers
+              <button
+                onClick={() => setCategory('pc')}
+                className="nav-button"
+              >
+                <Monitor className="icon" />
+                PC
               </button>
             </div>
           </div>
-
-          <div className="cart-container">
-            <ShoppingCart className="cart-icon" />
-            <span className="cart-badge">{cartCount}</span>
+          <div className="right-section">
+            <div className="cart-container">
+              <ShoppingCart className="cart-icon" />
+              {cartCount > 0 && (
+                <span className="cart-badge">
+                  {cartCount}
+                </span>
+              )}
+            </div>
+            <button className="menu-button">
+              <Menu className="menu-icon" />
+            </button>
           </div>
-
-          <button className="menu-button">
-            <Menu />
-          </button>
         </div>
       </div>
     </nav>

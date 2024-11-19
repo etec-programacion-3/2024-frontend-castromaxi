@@ -2,20 +2,27 @@ import React from 'react';
 import ProductCard from '../ProductCard/ProductCard.jsx';
 import './ProductGrid.css';
 
-function ProductGrid({ products, addToCart }) {
+function ProductGrid({ category, products, addToCart }) {
   return (
-    <section className="product-grid">
+    <div className="products-container">
       <div className="section-header">
-        <h2 className="section-title">Featured Products</h2>
-        <div className="section-divider"></div>
+        <h2 className="section-title">
+          {category === 'all' ? 'Featured Products' : 
+           category === 'mobile' ? 'Mobile Accessories' : 'PC Accessories'}
+        </h2>
+        <div className="title-underline"></div>
       </div>
 
-      <div className="products-container">
+      <div className="products-grid">
         {products.map((product) => (
-          <ProductCard key={product.id} product={product} addToCart={addToCart} />
+          <ProductCard
+            key={product.id}
+            product={product}
+            addToCart={addToCart}
+          />
         ))}
       </div>
-    </section>
+    </div>
   );
 }
 
