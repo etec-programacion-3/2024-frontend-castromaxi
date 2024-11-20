@@ -2,7 +2,7 @@ import React from 'react';
 import ProductCard from '../ProductCard/ProductCard.jsx';
 import './ProductGrid.css';
 
-function ProductGrid({ category, products, addToCart }) {
+function ProductGrid({ category, products, addToCart, removeFromCart, cartItems }) {
   return (
     <div className="products-container">
       <div className="section-header">
@@ -19,6 +19,8 @@ function ProductGrid({ category, products, addToCart }) {
             key={product.id}
             product={product}
             addToCart={addToCart}
+            removeFromCart={removeFromCart}
+            cartItems={cartItems}
           />
         ))}
       </div>

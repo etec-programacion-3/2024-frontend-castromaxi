@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import Navbar from './components/Navbar/Navbar.jsx';
-import ProductGrid from './components/ProductGrid/ProductGrid.jsx';
-import Hero from './components/Hero/Hero.jsx';
-import Footer from './components/Footer/Footer.jsx';
+import Navbar from './components/Navbar/Navbar';
+import CartSidebar from './components/CartSidebar/CartSidebar';
+import ProductGrid from './components/ProductGrid/ProductGrid';
+import Hero from './components/Hero/Hero';
+import Footer from './components/Footer/Footer';
 
 function App() {
   const [cart, setCart] = useState([]);
   const [category, setCategory] = useState('all');
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   const products = [
     {
@@ -35,12 +37,35 @@ function App() {
     setCart([...cart, product]);
   };
 
+  const removeFromCart = (productId) => {
+    setCart(cart.filter(item => item.id !== productId));
+  };
+
   return (
     <div className="app-container">
-      <Navbar cartCount={cart.length} setCategory={setCategory} />
-      <Hero />
-      <ProductGrid products={filteredProducts} addToCart={addToCart} category={category} />
+      <Navbar 
+        cartCount={cart.length} 
+        setCategory={setCategory}
+        openCart={() => setIsCartOpen(true)}
+      />
+      <main className="main-content">
+        <Hero />
+        <ProductGrid 
+          products={filteredProducts} 
+          addToCart={addToCart} 
+          removeFromCart={removeFromCart}
+          category={category}
+          cartItems={cart} 
+        />
+      </main>
       <Footer />
+      
+      <CartSidebar 
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+        cartItems={cart}
+        removeFromCart={removeFromCart}
+      />
     </div>
   );
 }

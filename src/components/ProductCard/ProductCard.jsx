@@ -1,8 +1,19 @@
 import React from 'react';
-import { Plus, Star } from 'lucide-react';
+import { Plus, Minus, Star } from 'lucide-react';
 import './ProductCard.css';
 
-function ProductCard({ product, addToCart }) {
+function ProductCard({ product, addToCart, removeFromCart, cartItems }) {
+  // Verificar si el producto está en el carrito
+  const isInCart = cartItems.some(item => item.id === product.id);
+
+  const handleClick = () => {
+    if (isInCart) {
+      removeFromCart(product.id);
+    } else {
+      addToCart(product);
+    }
+  };
+
   return (
     <div className="product-card">
       <div className="image-container">
@@ -27,11 +38,20 @@ function ProductCard({ product, addToCart }) {
         </div>
         <p className="product-description">{product.description}</p>
         <button
-          onClick={() => addToCart(product)}
-          className="add-to-cart-button"
+          onClick={handleClick}
+          className={`cart-button ${isInCart ? 'remove' : 'add'}`}
         >
-          <Plus className="plus-icon" />
-          <span>Add to Cart</span>
+          {isInCart ? (
+            <>
+              <Minus className="button-icon" />
+              <span>Remove from Cart</span>
+            </>
+          ) : (
+            <>
+              <Plus className="button-icon" />
+              <span>Add to Cart</span>
+            </>
+          )}
         </button>
       </div>
     </div>
