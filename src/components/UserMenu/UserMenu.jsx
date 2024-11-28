@@ -1,8 +1,16 @@
 import React from 'react';
 import { X, User, LogIn, UserPlus, Settings, LogOut } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import './UserMenu.css';
 
-function UserMenu({ isOpen, onClose }) {
+function UserMenu({ isOpen, onClose, isAuthenticated, onLogout }) {
+  const navigate = useNavigate();
+
+  const handleNavigation = (path) => {
+    onClose(); // Cerrar el menú
+    navigate(path); // Navegar a la ruta
+  };
+
   return (
     <div className={`user-menu-overlay ${isOpen ? 'active' : ''}`} onClick={onClose}>
       <div className={`user-menu ${isOpen ? 'active' : ''}`} onClick={e => e.stopPropagation()}>
@@ -14,27 +22,48 @@ function UserMenu({ isOpen, onClose }) {
         </div>
 
         <div className="user-menu-content">
-          <div className="user-menu-section">
-            <button className="user-menu-item">
-              <LogIn className="icon" />
-              <span>Sign In</span>
-            </button>
-            <button className="user-menu-item">
-              <UserPlus className="icon" />
-              <span>Create Account</span>
-            </button>
-          </div>
-
-          <div className="user-menu-section">
-            <button className="user-menu-item">
-              <Settings className="icon" />
-              <span>Settings</span>
-            </button>
-            <button className="user-menu-item">
-              <LogOut className="icon" />
-              <span>Sign Out</span>
-            </button>
-          </div>
+          {!isAuthenticated ? (
+            // Menú para usuarios no autenticados
+            <div className="user-menu-section">
+              <button 
+                className="user-menu-item"
+                onClick={() => handleNavigation('/login')}
+              >
+                <LogIn className="icon" />
+                <span>Sign In</span>
+              </button>
+              <button 
+                className="user-menu-item"
+                onClick={() => handleNavigation('/register')}
+              >
+                <UserPlus className="icon" />
+                <span>Create Account</span>
+              </button>
+            </div>
+          ) : (
+            // Menú para usuarios autenticados
+            <>
+              <div className="user-menu-section">
+                <button 
+                  className="user-menu-item"
+                  onClick={() => handleNavigation('/settings')}
+                >
+                  <Settings className="icon" />
+                  <span>Settings</span>
+                </button>
+                <button 
+                  className="user-menu-item"
+                  onClick={() => {
+                    onLogout();
+                    onClose();
+                  }}
+                >
+                  <LogOut className="icon" />
+                  <span>Sign Out</span>
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

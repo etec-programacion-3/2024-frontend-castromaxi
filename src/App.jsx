@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
 import CartSidebar from './components/CartSidebar/CartSidebar';
 import ProductGrid from './components/ProductGrid/ProductGrid';
 import Hero from './components/Hero/Hero';
 import Footer from './components/Footer/Footer';
+import UserMenu from './components/UserMenu/UserMenu';
+import Login from './components/Login/Login';
 
 function App() {
   const [cart, setCart] = useState([]);
   const [category, setCategory] = useState('all');
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
   const products = [
     {
@@ -41,32 +46,63 @@ function App() {
     setCart(cart.filter(item => item.id !== productId));
   };
 
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    // Aquí puedes agregar más lógica de logout si es necesario
+  };
+
   return (
-    <div className="app-container">
-      <Navbar 
-        cartCount={cart.length} 
-        setCategory={setCategory}
-        openCart={() => setIsCartOpen(true)}
-      />
-      <main className="main-content">
-        <Hero />
-        <ProductGrid 
-          products={filteredProducts} 
-          addToCart={addToCart} 
-          removeFromCart={removeFromCart}
-          category={category}
-          cartItems={cart} 
+    <BrowserRouter>
+      <div className="app-container">
+        <Navbar 
+          cartCount={cart.length} 
+          setCategory={setCategory}
+          openCart={() => setIsCartOpen(true)}
+          openUserMenu={() => setIsUserMenuOpen(true)}
+          isAuthenticated={isAuthenticated}
         />
-      </main>
-      <Footer />
-      
-      <CartSidebar 
-        isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
-        cartItems={cart}
-        removeFromCart={removeFromCart}
-      />
-    </div>
+        
+        <UserMenu 
+          isOpen={isUserMenuOpen}
+          onClose={() => setIsUserMenuOpen(false)}
+          isAuthenticated={isAuthenticated}
+          onLogout={handleLogout}
+        />
+
+        <Routes>
+          <Route 
+            path="/login" 
+            element={
+              !isAuthenticated ? (
+                <Login onLogin={() => setIsAuthenticated(true)} />
+              ) : (
+                <Navigate to="/" replace />
+              )
+            } 
+          />
+          {/* ... otras rutas ... */}
+        </Routes>
+
+        <main className="main-content">
+          <Hero />
+          <ProductGrid 
+            products={filteredProducts} 
+            addToCart={addToCart} 
+            removeFromCart={removeFromCart}
+            category={category}
+            cartItems={cart} 
+          />
+        </main>
+        <Footer />
+        
+        <CartSidebar 
+          isOpen={isCartOpen}
+          onClose={() => setIsCartOpen(false)}
+          cartItems={cart}
+          removeFromCart={removeFromCart}
+        />
+      </div>
+    </BrowserRouter>
   );
 }
 

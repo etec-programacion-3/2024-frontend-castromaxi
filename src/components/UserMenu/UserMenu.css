@@ -9,6 +9,8 @@
   opacity: 0;
   transition: all 0.3s ease;
   z-index: 100;
+  width: 100vw;
+  height: 100vh;
 }
 
 .user-menu-overlay.active {

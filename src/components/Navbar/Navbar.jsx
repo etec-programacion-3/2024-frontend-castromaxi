@@ -3,8 +3,9 @@ import { ShoppingCart, Smartphone, Monitor, Menu, User } from 'lucide-react';
 import MobileMenu from '../MobileMenu/MobileMenu';
 import UserMenu from '../UserMenu/UserMenu';
 import './Navbar.css';
+import { Link } from 'react-router-dom';
 
-function Navbar({ cartCount, setCategory, openCart }) {
+function Navbar({ cartCount, setCategory, openCart, isAuthenticated }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
@@ -64,6 +65,18 @@ function Navbar({ cartCount, setCategory, openCart }) {
         isOpen={isUserMenuOpen}
         onClose={() => setIsUserMenuOpen(false)}
       />
+
+      <div className="nav-auth">
+        {isAuthenticated ? (
+          <button onClick={() => setIsAuthenticated(false)} className="auth-button">
+            Logout
+          </button>
+        ) : (
+          <Link to="/login" className="auth-button">
+            Login
+          </Link>
+        )}
+      </div>
     </nav>
   );
 }
