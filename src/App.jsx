@@ -62,13 +62,6 @@ function App() {
           isAuthenticated={isAuthenticated}
         />
         
-        <UserMenu 
-          isOpen={isUserMenuOpen}
-          onClose={() => setIsUserMenuOpen(false)}
-          isAuthenticated={isAuthenticated}
-          onLogout={handleLogout}
-        />
-
         <Routes>
           <Route 
             path="/login" 
@@ -80,27 +73,39 @@ function App() {
               )
             } 
           />
-          {/* ... otras rutas ... */}
-        </Routes>
+          <Route
+            path="/*"
+            element={
+              <>
+                <UserMenu 
+                  isOpen={isUserMenuOpen}
+                  onClose={() => setIsUserMenuOpen(false)}
+                  isAuthenticated={isAuthenticated}
+                  onLogout={handleLogout}
+                />
 
-        <main className="main-content">
-          <Hero />
-          <ProductGrid 
-            products={filteredProducts} 
-            addToCart={addToCart} 
-            removeFromCart={removeFromCart}
-            category={category}
-            cartItems={cart} 
+                <main className="main-content">
+                  <Hero />
+                  <ProductGrid 
+                    products={filteredProducts} 
+                    addToCart={addToCart} 
+                    removeFromCart={removeFromCart}
+                    category={category}
+                    cartItems={cart} 
+                  />
+                </main>
+                <Footer />
+                
+                <CartSidebar 
+                  isOpen={isCartOpen}
+                  onClose={() => setIsCartOpen(false)}
+                  cartItems={cart}
+                  removeFromCart={removeFromCart}
+                />
+              </>
+            }
           />
-        </main>
-        <Footer />
-        
-        <CartSidebar 
-          isOpen={isCartOpen}
-          onClose={() => setIsCartOpen(false)}
-          cartItems={cart}
-          removeFromCart={removeFromCart}
-        />
+        </Routes>
       </div>
     </BrowserRouter>
   );
